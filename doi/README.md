@@ -36,10 +36,10 @@ description: General info, notes and worklog
 	- [X] create Jira SR button sending request to above Pub/Sub
 	- [X] move secrets from source code to Secret Manager
 
-- [.] [GCP -> Jira](#GCP -> Jira):
+- [o] [GCP -> Jira](#GCP -> Jira):
 	- [X] add a comment in the issue sending request
 	- [ ] add/edit customfield value in the issue
-	- [ ] secure Jira key (*KMS*?)
+	- [X] secure Jira key (*KMS*?)
 
 - [ ] [Jira -> GCP](#Jira -> GCP):
 	- [ ] find a better way to authenticate user (*Cloud Endpoints* with API key?)
