@@ -29,17 +29,19 @@ description: General info, notes and worklog
 
 # Tasks
 
-- [X] [Basic Jira <-> GCP connection](#Basic Jira <-> GCP connection):
-	- [X] create Pub/Sub topic as HTTP endpoint
-	- [X] create simple function logging the request
-	- [X] send example message with `curl`
-	- [X] create Jira SR button sending request to above Pub/Sub
+- [o] [Basic Jira <-> GCP connection](#Basic Jira <-> GCP connection):
+	- [X] ~~create Pub/Sub topic as HTTP endpoint~~
+	- [X] ~~create simple function logging the request~~
+	- [ ] create simple *Cloud Run* service
+	- [ ] send example message with `curl`
+	- [X] ~~create Jira SR button sending request to above Pub/Sub~~
+	- [ ] create Jira SR button sending request to above Cloud Run
 	- [X] move secrets from source code to Secret Manager
 
 - [o] [GCP -> Jira](#GCP -> Jira):
 	- [X] add a comment in the issue sending request
 	- [ ] add/edit customfield value in the issue
-	- [X] secure Jira key (*KMS*?)
+	- [X] secure Jira key (*Secret Manager*?)
 
 - [ ] [Jira -> GCP](#Jira -> GCP):
 	- [ ] find a better way to authenticate user (*Cloud Endpoints* with API key?)
@@ -65,7 +67,7 @@ Function code example from (https://github.com/GoogleCloudPlatform/python-docs-s
 gcloud config set functions/region europe-central2
 gcloud config set functions/gen2 true
 gcloud pubsub topics create doi-request
-gcloud functions deploy doi-request-test --runtime=python310 --source=. --entry-point=subscribe --trigger-topic=doi-request
+gcloud functions deploy doi-request-test --runtime=python310 --source=function-doi-request-test --entry-point=subscribe --trigger-topic=doi-request
 ```
 
 Sending example message with `curl` (base64 encoding):
@@ -76,6 +78,43 @@ Sending example message with `curl` (base64 encoding):
 SR button code (authorization token is temporary) in `jira-pf-generate-doi.groovy`.
 
 Added secrets to GCP Secret Manager.
+
+## Migrating to Cloud Run
+Because the only way to access *Pub/Sub* from the outside with API key is through Endpoints -> App Engine -> Pub/Sub above plan makes no sense! If we are using App Engine it's better to stay there. Hence the idea of using plain Run service. There could be the same problem but... well.. let's try it anyway!
+
+After creating basic service code add secrets by exporting YAML:
+```
+gcloud run services describe $SERVICE_NAME --format export >> ./run-doi-request-test/service.yaml
+```
+
+Then add envs in container config:
+```
+spec:
+  ...
+  template:
+    ...
+    spec:
+      ...
+      containers:
+      - image: ...
+        ...
+        env:
+        - name: JIRA_CZK_USER
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: jira-czk-user
+        - name: JIRA_CZK_KEY
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: jira-czk-key
+```
+
+Increase revision number, make sure user has secret acces and then:
+```
+gcloud run services replace ./run-doi-request-test/service.yaml
+```
 
 
 ## GCP -> Jira
