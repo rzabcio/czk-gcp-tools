@@ -1,0 +1,23 @@
+swagger: '2.0'
+info:
+  title: DOI Endpoints
+  description: DOI endpoints currently on Cloud Run
+  version: 1.0.0
+host: run-doi-request-test-f2exnkb4mq-lm.a.run.app
+schemes:
+  - https
+produces:
+  - application/json
+x-google-backend:
+  address: https://run-doi-request-test-f2exnkb4mq-lm.a.run.app
+  protocol: h2
+paths:
+  /hello:
+    get:
+      summary: Greet a user
+      operationId: hello
+      responses:
+        '200':
+          description: A successfull response
+          schema:
+            type: string
