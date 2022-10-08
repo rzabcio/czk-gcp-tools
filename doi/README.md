@@ -116,6 +116,19 @@ Increase revision number, make sure user has secret acces and then:
 gcloud run services replace ./run-doi-request-test/service.yaml
 ```
 
+## Configuring Endpoints - old
+Via: (https://medium.com/google-cloud/secure-cloud-run-cloud-functions-and-app-engine-with-api-key-73c57bededd1)
+Create account, add permissions:
+```
+gcloud iam service-accounts create endpoint-doi
+gcloud projects add-iam-policy-binding czk-tools --role roles/servicemanagement.configEditor --member serviceAccount:endpoint-doi@czk-tools.iam.gserviceaccount.com
+```
+... Breaking and ditching this method, it's from 2019.
+
+## Configuring endpoints (ESP2)
+Via: (https://cloud.google.com/endpoints/docs/openapi/set-up-cloud-run-espv2)
+
+Prepare Swagger
 
 ## GCP -> Jira
 
