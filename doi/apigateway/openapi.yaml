@@ -1,0 +1,21 @@
+swagger: '2.0'
+info:
+  title: hello-api
+  description: Simple hello api
+  version: 1.0.0
+schemes:
+- https
+produces:
+- application/json
+x-google-backend:
+  address: https://hello-service-f2exnkb4mq-lm.a.run.app
+paths:
+  /hello:
+    get:
+      summary: Hello Service
+      operationId: hello
+      responses:
+        '200':
+          description: A successfull response
+          schema:
+            type: string

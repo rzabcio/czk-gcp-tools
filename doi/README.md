@@ -125,10 +125,34 @@ gcloud projects add-iam-policy-binding czk-tools --role roles/servicemanagement.
 ```
 ... Breaking and ditching this method, it's from 2019.
 
+
 ## Configuring endpoints (ESP2)
 Via: (https://cloud.google.com/endpoints/docs/openapi/set-up-cloud-run-espv2)
 
-Prepare Swagger
+OpenAPI file: `endpoints/openapi.yaml`
+
+... It seems overkill (Endpoint is self-managed thins), let's switch again.
+
+
+## Configuring API Gateway
+Via: (https://cloud.google.com/api-gateway/docs/get-started-cloud-run)
+
+OpenAPI file: `apigateway/openapi.yaml`
+
+Creating:
+```
+gcloud api-gateway api-configs create hello-config \
+  --api=hello-api --openapi-spec=apigateway/openapi.yaml \
+  --project=czk-tools --backend-auth-service-account=doi-307@czk-tools.iam.gserviceaccount.com
+```
+
+Deploying:
+```
+gcloud api-gateway gateways create hello-gateway \
+  --api=hello-api --api-config=hello-config \
+  --location=europe-west1 --project=czk-tools
+```
+(API Gateway is available in `europe-west2` (London) and `europe-west1` (Belgium) only at this moment.)
 
 ## GCP -> Jira
 
