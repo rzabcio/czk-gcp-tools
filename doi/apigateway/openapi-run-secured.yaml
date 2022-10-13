@@ -2,13 +2,20 @@ swagger: '2.0'
 info:
   title: hello-api-secured
   description: Simple hello api
-  version: 1.0.0
+  version: 1.0.1
 schemes:
 - https
 produces:
 - application/json
 x-google-backend:
   address: https://hello-service-secured-f2exnkb4mq-lm.a.run.app
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "key"
+    in: "query"
+security:
+  - api_key: []
 paths:
   /hello:
     get:

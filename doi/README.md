@@ -156,6 +156,8 @@ gcloud api-gateway gateways create hello-gateway \
 
 Done the same steps but for run with not allowed unauthenticated. Service account is needed with *Cloud Run Invoker* role.
 
+Then done with adding `security: api-key: []` - update is not possible, needed to create new api-config and then update the gateway.
+
 ## GCP -> Jira
 
 ## Jira -> GCP
