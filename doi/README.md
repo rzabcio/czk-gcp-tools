@@ -154,6 +154,8 @@ gcloud api-gateway gateways create hello-gateway \
 ```
 (API Gateway is available in `europe-west2` (London) and `europe-west1` (Belgium) only at this moment.)
 
+Done the same steps but for run with not allowed unauthenticated. Service account is needed with *Cloud Run Invoker* role.
+
 ## GCP -> Jira
 
 ## Jira -> GCP
